@@ -102,7 +102,10 @@ export class NumberOfEmployees extends React.Component {
     };
 
     return (
-      <Bar data={data} height={150} options={options} />
+      <div style={{ width: '100%', padding: 5, fontSize: 12 }}>
+        <div style={{ color: 'darkred', fontWeight: 'bold' }}>{profile.ticker} - {profile.name}</div>
+        <Bar data={data} height={150} options={options} />
+      </div>
     );
   }
 }

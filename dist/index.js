@@ -158,11 +158,22 @@ function (_React$Component) {
           }
         }
       };
-      return _react["default"].createElement(_reactChartjs.Bar, {
+      return _react["default"].createElement("div", {
+        style: {
+          width: '100%',
+          padding: 5,
+          fontSize: 12
+        }
+      }, _react["default"].createElement("div", {
+        style: {
+          color: 'darkred',
+          fontWeight: 'bold'
+        }
+      }, profile.ticker, " - ", profile.name), _react["default"].createElement(_reactChartjs.Bar, {
         data: data,
         height: 150,
         options: options
-      });
+      }));
     }
   }]);
 
