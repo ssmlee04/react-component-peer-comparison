@@ -36,7 +36,7 @@ export class NumberOfEmployees extends React.Component {
       const btnText = copied ? 'Copied' : 'Copy Img';
       return (
         <div className='react-components-show-button'>
-          <img alt={`${profile.ticker} - ${profile.name} revenue and income margins`} src={profile.num_employees.url} style={{ width: '100%' }} />
+          <img alt={`${profile.ticker} - ${profile.name} number of employees time series`} src={profile.num_employees.url} style={{ width: '100%' }} />
           <CopyToClipboard text={profile.num_employees.url || ''}
             onCopy={() => this.setState({ copied: true })}
           >

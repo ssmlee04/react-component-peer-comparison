@@ -81,7 +81,7 @@ function (_React$Component) {
         return _react["default"].createElement("div", {
           className: "react-components-show-button"
         }, _react["default"].createElement("img", {
-          alt: "".concat(profile.ticker, " - ").concat(profile.name, " revenue and income margins"),
+          alt: "".concat(profile.ticker, " - ").concat(profile.name, " number of employees time series"),
           src: profile.num_employees.url,
           style: {
             width: '100%'
