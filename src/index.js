@@ -4,6 +4,8 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { Bar } from 'react-chartjs-2';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import dayjsPluginUTC from 'dayjs-plugin-utc';
+dayjs.extend(dayjsPluginUTC);
 
 export class NumberOfEmployees extends React.Component {
   constructor(props) {
