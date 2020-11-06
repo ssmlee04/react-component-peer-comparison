@@ -7,11 +7,11 @@ exports["default"] = exports.NumberOfEmployees = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _dayjs = _interopRequireDefault(require("dayjs"));
-
 var _reactChartjs = require("react-chartjs-2");
 
 var _reactCopyToClipboard = require("react-copy-to-clipboard");
+
+var _dayjs = _interopRequireDefault(require("dayjs"));
 
 var _dayjsPluginUtc = _interopRequireDefault(require("dayjs-plugin-utc"));
 
@@ -66,28 +66,33 @@ function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var profile = this.props.profile;
+      var _this$props = this.props,
+          profile = _this$props.profile,
+          _this$props$imgProp = _this$props.imgProp,
+          imgProp = _this$props$imgProp === void 0 ? 'num_employees' : _this$props$imgProp;
       var copied = this.state.copied;
 
-      if (!profile || !profile.numbers) {
+      if (!profile) {
         return _react["default"].createElement("div", {
-          className: "font-12"
+          style: {
+            fontSize: 12
+          }
         }, "Not available at this time... ");
       }
 
-      if (profile.num_employees && profile.num_employees.url) {
+      if (profile[imgProp] && profile[imgProp].url) {
         var btnClass = copied ? 'react-components-show-url btn btn-sm btn-danger disabled font-10' : 'react-components-show-url btn btn-sm btn-warning font-10';
         var btnText = copied ? 'Copied' : 'Copy Img';
         return _react["default"].createElement("div", {
           className: "react-components-show-button"
         }, _react["default"].createElement("img", {
-          alt: "".concat(profile.ticker, " - ").concat(profile.name, " number of employees time series"),
-          src: profile.num_employees.url,
+          alt: "".concat(profile.ticker, " - ").concat(profile.name, " Employees and Productivity"),
+          src: profile[imgProp].url,
           style: {
             width: '100%'
           }
         }), _react["default"].createElement(_reactCopyToClipboard.CopyToClipboard, {
-          text: profile.num_employees.url || '',
+          text: profile[imgProp].url || '',
           onCopy: function onCopy() {
             return _this2.setState({
               copied: true
@@ -99,81 +104,129 @@ function (_React$Component) {
         }, btnText)));
       }
 
+      if (!profile || !profile.numbers || !profile.numbers.number_of_employees_ts) return null;
+      if (!profile || !profile.numbers || !profile.numbers.revenue_per_employee_ts) return null;
       var number_of_employees_ts = profile.numbers.number_of_employees_ts || [];
+      var revenue_per_employee_ts = profile.numbers.revenue_per_employee_ts || [];
       var number_of_employees = number_of_employees_ts.map(function (d) {
         return d.employees;
       });
-      var datasets = [{
-        backgroundColor: '#A93226',
-        borderColor: '#A93226',
-        borderCapStyle: 'butt',
-        pointBorderColor: '#A93226',
-        pointBackgroundColor: '#fff',
-        pointBorderWidth: 1,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: '#A93226',
-        pointHoverBorderColor: '#A93226',
-        pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        pointHitRadius: 10,
-        data: number_of_employees
-      }];
+      var revenue_per_employee = revenue_per_employee_ts.map(function (d) {
+        return d.revenuePerEmployee;
+      });
       var data = {
         labels: number_of_employees_ts.map(function (d) {
           return _dayjs["default"].utc(d.ts).format('YYYYMM');
         }),
-        datasets: datasets
+        datasets: [{
+          yAxisID: 'number of employees',
+          type: 'line',
+          fill: false,
+          backgroundColor: 'darkred',
+          borderColor: 'darkred',
+          lineTension: 0,
+          borderWidth: 1,
+          pointRadius: 2,
+          pointHoverRadius: 2,
+          data: number_of_employees,
+          label: "Number Of Employees"
+        }, {
+          yAxisID: 'revenue per employee',
+          type: 'line',
+          fill: false,
+          backgroundColor: 'darkgreen',
+          borderColor: 'darkgreen',
+          lineTension: 0,
+          borderWidth: 1,
+          pointRadius: 2,
+          pointHoverRadius: 2,
+          data: revenue_per_employee,
+          label: 'Revenue Per Employee'
+        }]
       };
-      var min = _.min(number_of_employees) || 0;
-      var max = _.max(number_of_employees) || Number.MAX_SAFE_INTEGER;
       var options = {
         legend: {
-          display: false,
           labels: {
-            fontSize: 10,
+            fontSize: 14,
             boxWidth: 10
           }
         },
         scales: {
           xAxes: [{
             ticks: {
-              fontSize: 10
+              fontSize: 12
             },
             barPercentage: 0.4
           }],
           yAxes: [{
+            type: 'linear',
+            display: true,
+            position: 'left',
+            id: 'number of employees',
+            gridLines: {
+              display: false
+            },
+            labels: {
+              show: true
+            },
             ticks: {
+              fontColor: 'darkred',
               fontSize: 10,
-              min: min === max ? Math.floor(max / 2) : Math.max(2 * min - max, 0)
+              callback: function callback(label, index, labels) {
+                return Math.floor(label);
+              }
+            }
+          }, {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            id: 'revenue per employee',
+            labels: {
+              show: true
+            },
+            ticks: {
+              fontColor: 'darkgreen',
+              fontSize: 10,
+              // min: 0,
+              callback: function callback(label, index, labels) {
+                return Math.floor(label);
+              }
             }
           }]
-        },
-        tooltips: {
-          callbacks: {
-            label: function label(tooltipItem, data) {
-              var label = 'Number of employees: ';
-              label += tooltipItem.yLabel || 'n/a';
-              return label;
-            }
-          }
         }
       };
       return _react["default"].createElement("div", {
         style: {
           width: '100%',
           padding: 5,
-          fontSize: 12
+          fontSize: 14
         }
       }, _react["default"].createElement("div", {
         style: {
           color: 'darkred',
           fontWeight: 'bold'
         }
-      }, profile.ticker, " - ", profile.name), _react["default"].createElement(_reactChartjs.Bar, {
+      }, profile.ticker, " - ", profile.name, " ", _react["default"].createElement("span", {
+        className: "green"
+      }, "Employees and Productivity")), _react["default"].createElement(_reactChartjs.Bar, {
         data: data,
-        height: 150,
+        height: 220,
         options: options
-      }));
+      }), _react["default"].createElement("div", {
+        style: {
+          fontSize: 12,
+          color: 'gray'
+        }
+      }, "Generated by ", _react["default"].createElement("span", {
+        style: {
+          color: 'darkred'
+        }
+      }, "@earningsfly"), " with ", _react["default"].createElement("span", {
+        style: {
+          fontSize: 16,
+          color: 'red'
+        }
+      }, "\u2764\uFE0F")));
     }
   }]);
 

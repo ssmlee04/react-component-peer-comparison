@@ -1,9 +1,7 @@
-/* eslint-disable no-undef */
-
-import React from 'react';
-import dayjs from 'dayjs';
+import React from "react";
 import { Bar } from 'react-chartjs-2';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import dayjs from 'dayjs';
 import dayjsPluginUTC from 'dayjs-plugin-utc';
 dayjs.extend(dayjsPluginUTC);
 
@@ -24,20 +22,20 @@ export class NumberOfEmployees extends React.Component {
   }
 
   render() {
-    const { profile } = this.props;
+    const { profile, imgProp = 'num_employees' } = this.props;
     const { copied } = this.state;
-    if (!profile || !profile.numbers) {
+    if (!profile) {
       return (
-        <div className='font-12'>Not available at this time... </div>
+        <div style={{ fontSize: 12 }}>Not available at this time... </div>
       );
     }
-    if (profile.num_employees && profile.num_employees.url) {
+    if (profile[imgProp] && profile[imgProp].url) {
       const btnClass = copied ? 'react-components-show-url btn btn-sm btn-danger disabled font-10' : 'react-components-show-url btn btn-sm btn-warning font-10';
       const btnText = copied ? 'Copied' : 'Copy Img';
       return (
         <div className='react-components-show-button'>
-          <img alt={`${profile.ticker} - ${profile.name} number of employees time series`} src={profile.num_employees.url} style={{ width: '100%' }} />
-          <CopyToClipboard text={profile.num_employees.url || ''}
+          <img alt={`${profile.ticker} - ${profile.name} Employees and Productivity`} src={profile[imgProp].url} style={{ width: '100%' }} />
+          <CopyToClipboard text={profile[imgProp].url || ''}
             onCopy={() => this.setState({ copied: true })}
           >
             <button className={btnClass} value={btnText}>{btnText}</button>
@@ -45,66 +43,99 @@ export class NumberOfEmployees extends React.Component {
         </div>
       );
     }
+
+    if (!profile || !profile.numbers || !profile.numbers.number_of_employees_ts) return null;
+    if (!profile || !profile.numbers || !profile.numbers.revenue_per_employee_ts) return null;
     const number_of_employees_ts = profile.numbers.number_of_employees_ts || [];
+    const revenue_per_employee_ts = profile.numbers.revenue_per_employee_ts || [];
     const number_of_employees = number_of_employees_ts.map(d => d.employees);
-    const datasets = [{
-      backgroundColor: '#A93226',
-      borderColor: '#A93226',
-      borderCapStyle: 'butt',
-      pointBorderColor: '#A93226',
-      pointBackgroundColor: '#fff',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: '#A93226',
-      pointHoverBorderColor: '#A93226',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: number_of_employees
-    }];
+    const revenue_per_employee = revenue_per_employee_ts.map(d => d.revenuePerEmployee);
     const data = {
       labels: number_of_employees_ts.map(d => dayjs.utc(d.ts).format('YYYYMM')),
-      datasets
+      datasets: [{
+        yAxisID: 'number of employees',
+        type: 'line',
+        fill: false,
+        backgroundColor: 'darkred',
+        borderColor: 'darkred',
+        lineTension: 0,
+        borderWidth: 1,
+        pointRadius: 2,
+        pointHoverRadius: 2,
+        data: number_of_employees,
+        label: `Number Of Employees`
+      }, {
+        yAxisID: 'revenue per employee',
+        type: 'line',
+        fill: false,
+        backgroundColor: 'darkgreen',
+        borderColor: 'darkgreen',
+        lineTension: 0,
+        borderWidth: 1,
+        pointRadius: 2,
+        pointHoverRadius: 2,
+        data: revenue_per_employee,
+        label: 'Revenue Per Employee'
+      }]
     };
-    const min = _.min(number_of_employees) || 0;
-    const max = _.max(number_of_employees) || Number.MAX_SAFE_INTEGER;
     const options = {
       legend: {
-        display: false,
         labels: {
-          fontSize: 10,
+          fontSize: 14,
           boxWidth: 10,
         }
       },
       scales: {
         xAxes: [{
           ticks: {
-            fontSize: 10
+            fontSize: 12
           },
           barPercentage: 0.4
         }],
         yAxes: [{
-          ticks: {
-            fontSize: 10,
-            min: min === max ? Math.floor(max / 2) : Math.max(2 * min - max, 0)
-          }
-        }]
-      },
-      tooltips: {
-        callbacks: {
-          label: function(tooltipItem, data) {
-            var label = 'Number of employees: ';
-            label += tooltipItem.yLabel || 'n/a';
-            return label;
-          }
-        }
+                type: 'linear',
+                display: true,
+                position: 'left',
+                id: 'number of employees',
+                gridLines: {
+                  display: false
+                },
+                labels: {
+                  show: true
+                },
+                ticks: {
+                  fontColor: 'darkred',
+                  fontSize: 10,
+                    callback: function(label, index, labels) {
+                      return Math.floor(label);
+                    }
+                },
+              },
+              {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                id: 'revenue per employee',
+                labels: {
+                  show: true
+                },
+                ticks: {
+                  fontColor: 'darkgreen',
+                  fontSize: 10,
+                  // min: 0,
+                  callback: function(label, index, labels) {
+                    return Math.floor(label);
+                  }
+                },
+              }]
       },
     };
 
     return (
-      <div style={{ width: '100%', padding: 5, fontSize: 12 }}>
-        <div style={{ color: 'darkred', fontWeight: 'bold' }}>{profile.ticker} - {profile.name}</div>
-        <Bar data={data} height={150} options={options} />
+      <div style={{ width: '100%', padding: 5, fontSize: 14 }}>
+        <div style={{ color: 'darkred', fontWeight: 'bold' }}>{profile.ticker} - {profile.name} <span className='green'>Employees and Productivity</span></div>
+        <Bar data={data} height={220} options={options} />
+        <div style={{ fontSize: 12, color: 'gray' }}>Generated by <span style={{ color: 'darkred' }}>@earningsfly</span> with <span style={{ fontSize: 16, color: 'red' }}>❤️</span></div>
       </div>
     );
   }
