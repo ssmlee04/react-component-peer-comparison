@@ -109,10 +109,10 @@ function (_React$Component) {
       var number_of_employees_ts = profile.numbers.number_of_employees_ts || [];
       var revenue_per_employee_ts = profile.numbers.revenue_per_employee_ts || [];
       var number_of_employees = number_of_employees_ts.map(function (d) {
-        return d.employees;
+        return d.v;
       });
       var revenue_per_employee = revenue_per_employee_ts.map(function (d) {
-        return d.revenuePerEmployee;
+        return d.v;
       });
       var data = {
         labels: number_of_employees_ts.map(function (d) {
