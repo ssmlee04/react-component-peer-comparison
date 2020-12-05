@@ -7,6 +7,8 @@ exports["default"] = exports.NumberOfEmployees = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
+var _lodash = _interopRequireDefault(require("lodash"));
+
 var _reactChartjs = require("react-chartjs-2");
 
 var _reactCopyToClipboard = require("react-copy-to-clipboard");
@@ -144,6 +146,12 @@ function (_React$Component) {
           label: 'Number Of Employees'
         }]
       };
+
+      var max = _lodash["default"].max(number_of_employees);
+
+      var min = _lodash["default"].min(number_of_employees);
+
+      var barChartMin = Math.max(2 * min - max, 0);
       var options = {
         legend: {
           labels: {
@@ -187,7 +195,7 @@ function (_React$Component) {
             ticks: {
               fontColor: 'gray',
               fontSize: 10,
-              // min: 0,
+              min: barChartMin,
               callback: function callback(label, index, labels) {
                 return Math.floor(label);
               }

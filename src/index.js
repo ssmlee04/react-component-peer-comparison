@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 import { Bar } from 'react-chartjs-2';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import dayjs from 'dayjs';
@@ -78,6 +79,9 @@ export class NumberOfEmployees extends React.Component {
         label: 'Number Of Employees'
       }]
     };
+    const max = _.max(number_of_employees);
+    const min = _.min(number_of_employees);
+    const barChartMin = Math.max(2 * min - max, 0);
     const options = {
       legend: {
         labels: {
@@ -122,7 +126,7 @@ export class NumberOfEmployees extends React.Component {
                 ticks: {
                   fontColor: 'gray',
                   fontSize: 10,
-                  // min: 0,
+                  min: barChartMin,
                   callback: function(label, index, labels) {
                     return Math.floor(label);
                   }
