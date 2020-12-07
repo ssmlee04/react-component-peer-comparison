@@ -84,7 +84,7 @@ export class NumberOfEmployees extends React.Component {
     const max = _.max(number_of_employees);
     const min = _.min(number_of_employees);
     const barChartMin = max === min ? max / 2 : Math.max(2 * min - max, 0);
-    const barChartMax = max === min ? max * 1.1 : max * 1.1;
+    const barChartMax = max === min ? max * 1.1 : max * 1.03;
     const options = {
       legend: {
         labels: {
