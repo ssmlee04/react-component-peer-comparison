@@ -196,7 +196,7 @@ function (_React$Component) {
               show: true
             },
             ticks: {
-              fontColor: 'darkgray',
+              fontColor: 'gray',
               fontSize: 8,
               max: barChartMax,
               min: barChartMin,
