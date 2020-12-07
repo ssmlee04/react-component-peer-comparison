@@ -154,7 +154,7 @@ function (_React$Component) {
       var min = _lodash["default"].min(number_of_employees);
 
       var barChartMin = max === min ? max / 2 : Math.max(2 * min - max, 0);
-      var barChartMax = max === min ? max * 1.1 : max * 1.03;
+      var barChartMax = max === min ? max * 1.1 : max + (max - min) * 0.2;
       var options = {
         legend: {
           labels: {
