@@ -80,7 +80,7 @@ function (_React$Component) {
           height = _this$props$height === void 0 ? 80 : _this$props$height,
           ticker = _this$props.ticker,
           _this$props$sector = _this$props.sector,
-          sector = _this$props$sector === void 0 ? 'Sector' : _this$props$sector;
+          sector = _this$props$sector === void 0 ? '' : _this$props$sector;
 
       if (!data) {
         return _react["default"].createElement("div", {
@@ -130,7 +130,7 @@ function (_React$Component) {
         key: name
       }, _react["default"].createElement("span", {
         className: "font-12 darkred bold"
-      }, sector, " - ", _react["default"].createElement("span", {
+      }, sector ? "".concat(sector, " Sector") : 'Sector', " - ", _react["default"].createElement("span", {
         style: {
           color: 'green'
         }
