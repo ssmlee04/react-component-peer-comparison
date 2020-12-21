@@ -136,7 +136,7 @@ function (_React$Component) {
         key: name
       }, _react["default"].createElement("span", {
         className: "font-12 darkred bold"
-      }, sector ? "".concat(sector, " Sector") : 'Sector', " - ", _react["default"].createElement("span", {
+      }, ticker ? "".concat(ticker, " - ") : '', sector ? "".concat(sector, " Sector") : 'Sector', " - ", _react["default"].createElement("span", {
         style: {
           color: 'green'
         }
