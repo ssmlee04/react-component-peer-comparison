@@ -126,7 +126,11 @@ function (_React$Component) {
         }]
       };
       return _react["default"].createElement("div", {
-        className: "row no-gutters font-10"
+        style: {
+          width: '100%',
+          padding: 5,
+          fontSize: 8
+        }
       }, _react["default"].createElement("div", {
         className: "col-md-12",
         key: name

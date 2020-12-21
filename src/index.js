@@ -66,7 +66,7 @@ class TagBarCharts extends React.Component {
     };
 
     return (
-      <div className='row no-gutters font-10'>
+      <div style={{ width: '100%', padding: 5, fontSize: 8 }}>
         <div className='col-md-12' key={name}>
           <span className='font-12 darkred bold'>{sector ? `${sector} Sector` : 'Sector'} - <span style={{ color: 'green' }}>{name}</span></span>
           <Bar options={options} data={chartData} height={height} />
