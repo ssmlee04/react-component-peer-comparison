@@ -32,7 +32,7 @@ const options = {
 
 class TagBarCharts extends React.Component {
   render() {
-    const { data, name, color, tickercolor, height = 80, ticker, sector = '' } = this.props;
+    const { data, name, color = 'rgba(138,17,31,0.4)', tickercolor = 'rgba(138,17,31,1)', height = 80, ticker, sector = '' } = this.props;
     if ( !data ) {
       return (
         <div className='font-12'>Not available at this time... </div>
