@@ -131,9 +131,6 @@ function (_React$Component) {
           padding: 5,
           fontSize: 8
         }
-      }, _react["default"].createElement("div", {
-        className: "col-md-12",
-        key: name
       }, _react["default"].createElement("span", {
         className: "font-12 darkred bold"
       }, ticker ? "".concat(ticker, " - ") : '', sector ? "".concat(sector, " Sector") : 'Sector', " - ", _react["default"].createElement("span", {
@@ -144,7 +141,7 @@ function (_React$Component) {
         options: options,
         data: chartData,
         height: height
-      })), _react["default"].createElement("div", {
+      }), _react["default"].createElement("div", {
         style: {
           fontSize: 8
         }
